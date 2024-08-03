@@ -1,0 +1,65 @@
+/*
+Copyright 2024 Mitrofan Juryev
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+#pragma kernel RenderScroll
+
+Texture2D<half> HeightMap_0;
+Texture2D<half> HeightMap_1;
+
+Texture2D<half3> NormalMap_0;
+Texture2D<half3> NormalMap_1;
+
+// IMPORTANT: Normal maps must be unpacked and in world space.
+
+RWTexture2D<float4> Scroll;
+
+int Resolution;
+float4 Maps_ST;
+
+SamplerState bilinearRepeatSampler;
+
+half3 ConstructNormal(half3 packed)
+{
+    return packed * 2 - float3(1, 1, 1);
+}
+
+half3 PackNormal(half3 normal)
+{
+    return (normal + float3(1, 1, 1)) / 2;
+}
+
+half3 NormalStrength(half3 normal, half strength)
+{
+    normal.xz *= strength;
+    return normalize(normal);
+}
+
+[numthreads(32,32,1)]
+void RenderScroll (uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = id.xy / (float)Resolution;
+
+    half h_0 = HeightMap_0.SampleLevel(bilinearRepeatSampler, uv + Maps_ST.xy, 0);
+    half h_1 = HeightMap_1.SampleLevel(bilinearRepeatSampler, uv + Maps_ST.zw, 0);
+
+    half3 n_0 = ConstructNormal(NormalMap_0.SampleLevel(bilinearRepeatSampler, uv + Maps_ST.xy, 0).rgb);
+    half3 n_1 = ConstructNormal(NormalMap_1.SampleLevel(bilinearRepeatSampler, uv + Maps_ST.zw, 0).rgb);
+
+    half h = (h_0 + h_1) * 0.5;
+    half3 n = PackNormal(normalize(n_0 + n_1));
+
+    Scroll[id.xy] = half4(n, h);
+}
