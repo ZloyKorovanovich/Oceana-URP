@@ -17,3 +17,5 @@ Solution requiers:
 - Unity ver. 2023.2+
 - Universal RP
 - FullScreen Render Feature (for underwater effects)
+
+If there will be any issues or bugs found in this asset, report them to this e-mail: mitrofan3452@gmail.com
