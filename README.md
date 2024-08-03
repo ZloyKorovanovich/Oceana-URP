@@ -5,6 +5,7 @@ This is solution for Unity Universal Render Pipline. Supported version 2023.2+
 Repository contains of source project files and unity package for simpler installation.
 
 YouTube preview: https://www.youtube.com/watch?v=dJbRxulwyZU&t=2s
+
 Artstation preview: https://www.artstation.com/artwork/XJeZ3n
 
 Solution contains:
