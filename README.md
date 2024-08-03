@@ -12,6 +12,7 @@ Solution contains:
 - 2 Compute shaders for generating mesh & rendering ocean scrolls
 - 5 C# scripts for handling CPU part of code
 - 1 Demo Scene
+- URP set up for rendering both ocean surface & underwater post-processing
 
 Solution requiers:
 - Unity ver. 2023.2+
