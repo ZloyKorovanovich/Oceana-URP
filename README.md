@@ -19,7 +19,8 @@ Solution requiers:
 - Universal RP
 - FullScreen Render Feature (for underwater effects)
 
-IMPORTANT NOTE: For rendering ocean surface correctly toggles "Depth Texture" & "Opaque Texture" in URP Asset must be enabled. 
-IMPORTANT NOTE: For rendering post processing toggle "Deferred render path" in URP renderer must be enabled.
+IMPORTANT NOTES: 
+- For rendering ocean surface correctly toggles "Depth Texture" & "Opaque Texture" in URP Asset must be enabled.
+- For rendering post processing toggle "Deferred render path" in URP renderer must be enabled.
 
 If there will be any issues or bugs found in this asset, report them to this e-mail: mitrofan3452@gmail.com
