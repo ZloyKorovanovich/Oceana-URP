@@ -13,11 +13,13 @@ Solution contains:
 - 2 Compute shaders for generating mesh & rendering ocean scrolls
 - 5 C# scripts for handling CPU part of code
 - 1 Demo Scene
-- URP set up for rendering both ocean surface & underwater post-processing
 
 Solution requiers:
 - Unity ver. 2023.2+
 - Universal RP
 - FullScreen Render Feature (for underwater effects)
+
+IMPORTANT NOTE: For rendering ocean surface correctly toggles "Depth Texture" & "Opaque Texture" in URP Asset must be enabled. 
+IMPORTANT NOTE: For rendering post processing toggle "Deferred render path" in URP renderer must be enabled.
 
 If there will be any issues or bugs found in this asset, report them to this e-mail: mitrofan3452@gmail.com
