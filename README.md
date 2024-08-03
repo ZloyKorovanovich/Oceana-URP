@@ -1,8 +1,7 @@
 # Oceana-URP
 Oceana water for Unity URP
 
-
-![image_2024-08-03_13-49-41](https://github.com/user-attachments/assets/13a8f570-8066-43cf-813b-1af56f42ed2d)
+![image_2024-08-03_01-15-24](https://github.com/user-attachments/assets/ddcf2179-139f-465e-b483-96590474b718)
 
 This is solution for Unity Universal Render Pipline. Supported version 2023.2+
 Repository contains of source project files and unity package for simpler installation.
