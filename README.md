@@ -1,10 +1,12 @@
 # Oceana-URP
 Oceana water for Unity URP
 
-![image_2024-08-03_01-15-24](https://github.com/user-attachments/assets/ddcf2179-139f-465e-b483-96590474b718)
+![image_2024-08-03_01-20-15](https://github.com/user-attachments/assets/ced76b34-9957-481c-8950-d2317d655119)
 
 This is solution for Unity Universal Render Pipline. Supported version 2023.2+
 Repository contains of source project files and unity package for simpler installation.
+
+Features: water surface rendering with custom lighting model, underwater post-processing
 
 YouTube preview: https://www.youtube.com/watch?v=dJbRxulwyZU&t=2s
 
