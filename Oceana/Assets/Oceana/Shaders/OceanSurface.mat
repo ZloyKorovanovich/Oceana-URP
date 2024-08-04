@@ -105,7 +105,7 @@ Material:
     - _TessEdgeFactor: 64
     - _TessInsideFactor: 64
     m_Colors:
-    - _Color: {r: 0, g: 0.27450982, b: 0.4117647, a: 1}
+    - _Color: {r: 0, g: 0.29636592, b: 0.4415095, a: 1}
     - _FoamColor: {r: 0.9641509, g: 0.9775932, b: 1, a: 1}
     - _TessFactor: {r: 64, g: 64, b: 64, a: 64}
   m_BuildTextureStacks: []

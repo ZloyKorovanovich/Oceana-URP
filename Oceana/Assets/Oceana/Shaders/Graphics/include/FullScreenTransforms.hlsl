@@ -14,6 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+void GetSunXZ(out float3 x, out float3 z)
+{
+	x = normalize(cross(_MainLightPosition.xyz, float3(0, 1, 0)));
+	z = normalize(cross(_MainLightPosition.xyz, x));
+}
+
 float3 ProjectOnPlane(float3 vec, float3 normal)
 {
     return vec - normal * dot( vec, normal );

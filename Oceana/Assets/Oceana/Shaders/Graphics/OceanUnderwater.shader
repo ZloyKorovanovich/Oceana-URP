@@ -33,6 +33,9 @@ Shader "Oceana/OceanUnderwater"
         _FogDistance ("Distance", float) = 0.2
         _FogPower ("Power", range(0, 1)) = 0.5
 
+        [Header(GodRays)]
+        _RaysDistance ("Distance", float) = 1
+
         [Header(Waterline)]
         _LineOffset ("Offset", float) = 0.001
         _LineScale ("Scale", float) = 0.01
@@ -101,9 +104,19 @@ Shader "Oceana/OceanUnderwater"
             half _FogDistance, _FogPower;
             half _LineOffset, _LineScale;
 
+            sampler2D _RaysMask;
+            float4 _RaysMask_ST;
+            half _RaysDistance;
+
             half SphereMask(float3 coords, float3 center, float radius, half hardness)
             {
                 return 1 - saturate((distance(coords, center) - radius) / (1 - hardness));
+            }
+
+            float2 ClampMagnitude(float2 vec, float magnitude)
+            {
+                float len = length(vec);
+                return normalize(vec) * min(len, magnitude);
             }
 
             half4 Frag(Varyings input) : SV_Target
@@ -125,11 +138,24 @@ Shader "Oceana/OceanUnderwater"
                 float3 cameraSphere = normalize(-viewVector_ws);
                 float sphereMask = SphereMask(cameraSphere, _MainLightPosition.xyz, 0.5, -0.5) * (0.5f + cameraSphere.y * 0.5f);
                 float cameraMask = 1 - pow(saturate(-_WorldSpaceCameraPos.y / _FogDistance), 1 - _FogPower);
+                
+                float3 sunX;
+                float3 sunZ; 
+                GetSunXZ(sunX, sunZ);
+                float3 posSun = ProjectOnPlane(position_ws, _MainLightPosition.xyz);
+                float3 camSun = ProjectOnPlane(_WorldSpaceCameraPos.xyz, _MainLightPosition.xyz);
 
+                float2 posProj = float2(dot(posSun, sunX), dot(posSun, sunZ));
+                float2 camProj = float2(dot(camSun, sunX), dot(camSun, sunZ));
+
+                float2 sampleDir = posProj - camProj;
+                half multMaks = sphereMask * cameraMask * cameraMask * saturate(dot(sampleDir, sampleDir) / (_RaysDistance * _RaysDistance)) * saturate(_MainLightPosition.y);
+                half raysMask = saturate(length(SampleScrollsNormal_WS(camProj + normalize(sampleDir) * _RaysDistance).xz)) * multMaks;
                 half3 fogColor = lerp(_Color.rgb, sqrt(_Color.rgb * _MainLightColor.rgb), sphereMask * cameraMask);
+                fogColor = lerp(fogColor, sqrt(fogColor * _MainLightColor.rgb), raysMask);
 
-
-                half heightGradient = (SampleScrollsHeight_WS(near_ws.xz) + _LineOffset) - near_ws.y;
+                half height_ws = SampleScrollsHeight_WS(near_ws.xz) + _LineOffset;
+                half heightGradient = (height_ws) - near_ws.y;
 
                 half lineMask = 1 - saturate(heightGradient / _LineScale);
                 half3 underwaterColor = lerp(fogColor, _LineColor.rgb, lineMask);

@@ -40,6 +40,16 @@ half SampleScrollsHeight_WS(float2 uv)
     return (h_0 + h_1 + h_2) / 3.0;
 }
 
+half3 SampleScrollsNormal_WS(float2 uv)
+{
+    half3 n_0 = NormalStrength(ConstructNormal(tex2D(_Scroll_0, uv * _Scroll_0_ST.xy + _Scroll_0_ST.zw).rgb), _Height_0);
+    half3 n_1 = NormalStrength(ConstructNormal(tex2D(_Scroll_1, uv * _Scroll_1_ST.xy + _Scroll_1_ST.zw).rgb), _Height_1);
+    half3 n_2 = NormalStrength(ConstructNormal(tex2D(_Scroll_2, uv * _Scroll_2_ST.xy + _Scroll_2_ST.zw).rgb), _Height_2);
+
+    return NormalStrength(normalize(n_0 + n_1 + n_2), 0.33333);
+}
+
+
 void SampleScrolls(float2 uv, out half height_ws, out half3 normal_ws)
 {
     half4 s_0 = tex2D(_Scroll_0, uv * _Scroll_0_ST.xy + _Scroll_0_ST.zw);

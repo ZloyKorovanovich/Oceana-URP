@@ -80,6 +80,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RaysMask:
+        m_Texture: {fileID: 2800000, guid: 8927d000825e90a45a467a43d3749432, type: 3}
+        m_Scale: {x: 0.1, y: 0.1}
+        m_Offset: {x: 0.05, y: -0.05}
     - _Scroll_0:
         m_Texture: {fileID: 0}
         m_Scale: {x: 0.08, y: 0.08}
@@ -140,6 +144,11 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
+    - _RaysContrast: 1
+    - _RaysDistance: 9.32
+    - _RaysIntensity: 1.49
+    - _RaysPower: 1
+    - _RaysSamples: 1
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -151,7 +160,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.048935533, g: 0.23094699, b: 0.3283019, a: 1}
+    - _Color: {r: 0, g: 0.20744799, b: 0.35686275, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 0.122143105, g: 0.22286724, b: 0.2754717, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
