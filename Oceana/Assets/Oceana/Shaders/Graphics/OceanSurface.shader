@@ -41,10 +41,12 @@ Shader "Oceana/OceanSurface"
         _Refraction ("Index of Refraction", float) = 1.33
         _Depth ("Depth", float) = 5
         _DepthPower ("Depth Power", float) = 1
+        _ShallowPower ("Shallow Power", float) = 1
 
         [Header(Foam)]
         [Toggle] _IsRednerFoam ("Render", float) = 1
         _FoamMask ("Mask", 2D) = "white" {}
+        _FoamContrast ("Contrast", float) = 1
         _FoamColor ("Color", color) = (0.8, 0.8, 0.8, 1)
         _FoamAmount ("Amount", range(0, 1)) = 0.3
         _FoamCover ("Cover", float) = 0.3
@@ -216,14 +218,14 @@ Shader "Oceana/OceanSurface"
             half _Specular, _SpecCut;
             half _Reflectivity, _Fresnel, _SSSFresnel;
             half _SSSPower, _SSSIntensity, _SSSNormal;
-            half _Refraction, _Depth, _DepthPower;
+            half _Refraction, _Depth, _DepthPower, _ShallowPower;
             
             half _BackFresnel, _BackContrast;
 
             sampler2D _FoamMask;
             float4 _FoamMask_ST;
             half4 _FoamColor;
-            half _FoamAmount, _FoamCover, _FoamPower;
+            half _FoamAmount, _FoamContrast, _FoamCover, _FoamPower;
             half _IsRednerFoam;
 
             SamplerState bilinearRepeatSampler;
@@ -245,7 +247,7 @@ Shader "Oceana/OceanSurface"
 
                 half heightMask = pow(saturate(height_01 - (1 - _FoamAmount)), _FoamPower);
                 half depthMask = 1.0 - saturate(Linear01Depth(SampleSceneDepth(uv_ss), _ZBufferParams) * _ProjectionParams.z - (_FoamCover + varyings.position_ss.w - 1));
-                half foamMask = saturate(_IsRednerFoam) * tex2D(_FoamMask, varyings.position_ws.xz * _FoamMask_ST.xy + _Time.y * _FoamMask_ST.zw).r * saturate(heightMask + depthMask);
+                half foamMask = saturate(_IsRednerFoam) * saturate(Contrast(tex2D(_FoamMask, varyings.position_ws.xz * _FoamMask_ST.xy + _Time.y * _FoamMask_ST.zw).r, _FoamContrast, 0.2)) * saturate(heightMask + depthMask);
                 half3 color = _Color.rgb;
 
                 if(isFrontFace)
@@ -253,7 +255,7 @@ Shader "Oceana/OceanSurface"
                     half3 reflection_ws = reflect(viewDir_ws, normal_ws);
                     half roughness = max(1 - sqrt(_Specular), HALF_MIN);
 
-                    color = SurfaceColor(color, varyings.position_ss, uv_ss, normal_ws, _Refraction, _Depth, _DepthPower);
+                    color = SurfaceColor(color, varyings.position_ss, uv_ss, normal_ws, _Refraction, _Depth, _DepthPower, _ShallowPower);
                     half3 envColor = SAMPLE_TEXTURECUBE(unity_SpecCube0, bilinearRepeatSampler, reflection_ws).rgb;
                     half3 sssColor = sqrt(_MainLightColor.rgb * color);
 

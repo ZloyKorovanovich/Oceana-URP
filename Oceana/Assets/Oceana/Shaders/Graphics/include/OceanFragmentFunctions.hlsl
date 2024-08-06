@@ -28,26 +28,31 @@ half Fresnel(half3 normal, half3 viewDir, half power)
     return pow((1.0 - saturate(dot(normalize(normal), normalize(viewDir)))), power);
 }
 
-half Contrast(half value, half contrast)
+half Contrast(half value, half contrast, half midpoint)
 {
-    float midpoint = 0.001;
     return (value - midpoint) * contrast + midpoint;
 }
 
 // Lighting
-half3 SurfaceColor(half3 baseColor, float4 screenPosition, float2 uv, half3 normal, half refraction, half depth, half depthPower)
+half3 SurfaceColor(half3 baseColor, float4 screenPosition, float2 uv, half3 normal, half refraction, half depth, half depthPower, half shallowPower)
 {
     float2 refract = normal.xz * refraction;
 
-    float d = 1.0 - saturate(Linear01Depth(SampleSceneDepth(uv), _ZBufferParams) * _ProjectionParams.z - (depth + screenPosition.w - 1));
-    float dR = 1.0 - saturate(Linear01Depth(SampleSceneDepth(uv + refract), _ZBufferParams) * _ProjectionParams.z - (depth + screenPosition.w - 1));
+    float linDepth = Linear01Depth(SampleSceneDepth(uv), _ZBufferParams);
+    float linRefracted = Linear01Depth(SampleSceneDepth(uv + refract), _ZBufferParams);
 
-    return lerp(baseColor.rgb, SampleSceneColor(uv + refract).rgb, pow(saturate(d * dR/ depth), depthPower));
+    float depthMask = (1.0 - saturate(linDepth * _ProjectionParams.z - (depth + screenPosition.w) - 1)) * (1.0 - saturate(linRefracted * _ProjectionParams.z - (depth + screenPosition.w) - 1));
+
+    half3 sceneColor = SampleSceneColor(uv + refract).rgb;
+
+    half3 shallowColor = sqrt(sceneColor * baseColor.rgb);
+    half depthGradient = saturate((linRefracted * _ProjectionParams.z - screenPosition.w) / depth);
+    return lerp(baseColor.rgb, lerp(sceneColor, lerp(shallowColor, baseColor.rgb, pow(depthGradient, shallowPower)), pow(depthGradient, depthPower)), saturate(depthMask));
 }
 
 half3 BackSurfaceColor(half3 baseColor, float2 uv, half3 normal, half3 viewDir, half fresnel, half contrast)
 {
-    half fresnelMask = saturate(Contrast(Fresnel(normal, viewDir, fresnel), contrast));
+    half fresnelMask = saturate(Contrast(Fresnel(normal, viewDir, fresnel), contrast, 0.001));
     return lerp(sqrt(SampleSceneColor(uv).rgb), baseColor.rgb, fresnelMask);
 }
 

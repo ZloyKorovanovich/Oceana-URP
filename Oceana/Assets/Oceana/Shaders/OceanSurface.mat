@@ -50,8 +50,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _FoamMask:
         m_Texture: {fileID: 2800000, guid: 1e4a91d3c925fd1499bf01b6f31edf0c, type: 3}
-        m_Scale: {x: 0.1, y: 0.1}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 0.2, y: 0.2}
+        m_Offset: {x: 0.1, y: 0.05}
     - _PlanarReflection:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -76,13 +76,14 @@ Material:
     - _CoatContrast: 0.52
     - _CoatIntesity: 1.13
     - _ConstRange: 0
-    - _Depth: 10
-    - _DepthPower: 1.3
+    - _Depth: 7
+    - _DepthPower: 0.19
     - _Diffuse: 1
     - _Fade: 1
     - _FadePower: 1
-    - _FoamAmount: 0.42
-    - _FoamCover: 0.3
+    - _FoamAmount: 0.361
+    - _FoamContrast: 2
+    - _FoamCover: 0.34
     - _FoamPower: 1
     - _Fresnel: 12
     - _Height_0: 2
@@ -91,22 +92,23 @@ Material:
     - _IsRednerFoam: 1
     - _LowerStrength: 1
     - _Reflectivity: 1
-    - _Refraction: 0.05
+    - _Refraction: 0.02
     - _Roughness: 0.005
     - _RoughnessContrast: 4.48
     - _SSSFresnel: 1.5
-    - _SSSIntensity: 0.25
+    - _SSSIntensity: 0.58
     - _SSSNormal: 1
-    - _SSSPower: 1
-    - _SpecCut: 0.05
+    - _SSSPower: 0.8
+    - _ShallowPower: 2.5
+    - _SpecCut: 0.1
     - _SpecPower: 2.5
     - _Specular: 0.96
     - _TessDistance: 150
     - _TessEdgeFactor: 64
     - _TessInsideFactor: 64
     m_Colors:
-    - _Color: {r: 0, g: 0.29636592, b: 0.4415095, a: 1}
-    - _FoamColor: {r: 0.9641509, g: 0.9775932, b: 1, a: 1}
+    - _Color: {r: 0, g: 0.3372549, b: 0.43529412, a: 1}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _TessFactor: {r: 64, g: 64, b: 64, a: 64}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
