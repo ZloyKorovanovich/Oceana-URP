@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using UnityEngine;
 
 namespace Oceana
@@ -21,64 +22,61 @@ namespace Oceana
     [DisallowMultipleComponent]
     public class Ocean : MonoBehaviour
     {
-        private const int COMPUTE_GROUP_X = 32;
-        private const int COMPUTE_GROUP_Y = 32;
-        private const int COMPUTE_GROUP_Z = 1;
+        [SerializeField]
+        private OceanGenerator m_Generator;
 
-        [SerializeField]
-        private ComputeShader m_Compute;
-        [SerializeField]
-        private ScrollResolution m_Resolution = ScrollResolution.res_1024x1024;
+        private Action m_OnGneratorChanged;
+        private Action m_OnUpdated;
+        private OceanGenerator m_TempGnerator;
 
-        [SerializeField]
-        private OceanScroll m_Scroll_0 = new();
-        [SerializeField]
-        private OceanScroll m_Scroll_1 = new();
-        [SerializeField]
-        private OceanScroll m_Scroll_2 = new();
-
-        public RenderTexture Scroll_0 => m_Scroll_0.Scroll;
-        public RenderTexture Scroll_1 => m_Scroll_1.Scroll;
-        public RenderTexture Scroll_2 => m_Scroll_2.Scroll;
-
-        public enum ScrollResolution : int
+        public event Action OnGneratorChanged
         {
-            res_512x512 = 512,
-            res_1024x1024 = 1024,
-            res_2048x2048 = 2048
+            add => m_OnGneratorChanged += value;
+            remove => m_OnGneratorChanged -= value;
+        }
+
+        public event Action OnUpdated
+        {
+            add => m_OnUpdated += value;
+            remove => m_OnUpdated -= value;
+        }
+
+        public OceanGenerator Generator => m_Generator;
+
+        private void Awake()
+        {
+            if (!CheckGenerator())
+                return;
+
+            m_Generator.InitScrolls();
         }
 
         private void FixedUpdate()
         {
-            RenderScroll(m_Scroll_0, Time.time, 0);
-            RenderScroll(m_Scroll_1, Time.time, 0);
-            RenderScroll(m_Scroll_2, Time.time, 0);
+            if (!CheckGenerator()) 
+                return;
+
+            m_Generator.Gnerate(Time.fixedTime);
+            m_OnUpdated?.Invoke();
         }
 
-        private void RenderScroll(OceanScroll scroll, float time, int kernel)
+        private void OnValidate()
         {
-            scroll.SetTextures(m_Compute, kernel);
-            scroll.SetParametres(m_Compute, time);
-
-            m_Compute.Dispatch(kernel, (int)m_Resolution / COMPUTE_GROUP_X, (int)m_Resolution / COMPUTE_GROUP_Y, COMPUTE_GROUP_Z);
-
-            scroll.Scroll.GenerateMips();
+            _ = CheckGenerator();
         }
 
-        private void OnEnable()
+        private bool CheckGenerator()
         {
-            m_Scroll_0.Init((int)m_Resolution);
-            m_Scroll_1.Init((int)m_Resolution);
-            m_Scroll_2.Init((int)m_Resolution);
+            if (m_Generator != m_TempGnerator)
+            {
+                m_OnGneratorChanged?.Invoke();
+                m_TempGnerator = m_Generator;
+            }
 
-            m_Compute.SetInt("Resolution", (int)m_Resolution);
-        }
+            if (m_Generator)
+                return true;
 
-        private void OnDisable()
-        {
-            m_Scroll_0.Release();
-            m_Scroll_1.Release();
-            m_Scroll_2.Release();
+            return false;
         }
     }
 }

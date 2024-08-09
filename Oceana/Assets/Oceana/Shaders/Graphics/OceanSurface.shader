@@ -245,9 +245,10 @@ Shader "Oceana/OceanSurface"
 
                 float2 uv_ss = GetSSUV(varyings.position_ss);
 
-                half heightMask = pow(saturate(height_01 - (1 - _FoamAmount)), _FoamPower);
+                half heightMask = pow(saturate(height_01 * abs(normal_ws.y) * abs(normal_ws.y) - (1 - _FoamAmount)), _FoamPower);
                 half depthMask = 1.0 - saturate(Linear01Depth(SampleSceneDepth(uv_ss), _ZBufferParams) * _ProjectionParams.z - (_FoamCover + varyings.position_ss.w - 1));
-                half foamMask = saturate(_IsRednerFoam) * saturate(Contrast(tex2D(_FoamMask, varyings.position_ws.xz * _FoamMask_ST.xy + _Time.y * _FoamMask_ST.zw).r, _FoamContrast, 0.2)) * saturate(heightMask + depthMask);
+                half foamtex = saturate(tex2D(_FoamMask, varyings.position_ws.xz * _FoamMask_ST.xy + _Time.y * _FoamMask_ST.zw).r + tex2D(_FoamMask, varyings.position_ws.xz * _FoamMask_ST.xy - _Time.y * _FoamMask_ST.zw).r);
+                half foamMask = saturate(_IsRednerFoam) * saturate(Contrast(foamtex, _FoamContrast, 0.4)) * saturate(heightMask + depthMask);
                 half3 color = _Color.rgb;
 
                 if(isFrontFace)

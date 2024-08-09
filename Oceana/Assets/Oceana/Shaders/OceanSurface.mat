@@ -12,8 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _ISREDNERFOAM_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -50,15 +49,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _FoamMask:
         m_Texture: {fileID: 2800000, guid: 1e4a91d3c925fd1499bf01b6f31edf0c, type: 3}
-        m_Scale: {x: 0.2, y: 0.2}
-        m_Offset: {x: 0.1, y: 0.05}
+        m_Scale: {x: 0.1, y: 0.1}
+        m_Offset: {x: 0.01, y: -0.04}
     - _PlanarReflection:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Scroll_0:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 0.08, y: 0.08}
+        m_Scale: {x: 0.1, y: 0.1}
         m_Offset: {x: 0, y: 0}
     - _Scroll_1:
         m_Texture: {fileID: 0}
@@ -66,12 +65,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Scroll_2:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 0.01, y: 0.01}
+        m_Scale: {x: 0.04, y: 0.04}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BackContrast: 0.6
-    - _BackFresnel: 0.5
+    - _BackFresnel: 1
     - _BaseReflectivity: 0
     - _CoatContrast: 0.52
     - _CoatIntesity: 1.13
@@ -81,34 +80,34 @@ Material:
     - _Diffuse: 1
     - _Fade: 1
     - _FadePower: 1
-    - _FoamAmount: 0.361
-    - _FoamContrast: 2
-    - _FoamCover: 0.34
+    - _FoamAmount: 0.306
+    - _FoamContrast: 3.8
+    - _FoamCover: 0.6
     - _FoamPower: 1
     - _Fresnel: 12
     - _Height_0: 2
     - _Height_1: 2
     - _Height_2: 6
-    - _IsRednerFoam: 1
+    - _IsRednerFoam: 0
     - _LowerStrength: 1
     - _Reflectivity: 1
     - _Refraction: 0.02
     - _Roughness: 0.005
     - _RoughnessContrast: 4.48
-    - _SSSFresnel: 1.5
+    - _SSSFresnel: 2
     - _SSSIntensity: 0.58
     - _SSSNormal: 1
     - _SSSPower: 0.8
-    - _ShallowPower: 2.5
-    - _SpecCut: 0.1
+    - _ShallowPower: 1
+    - _SpecCut: 0.063
     - _SpecPower: 2.5
-    - _Specular: 0.96
+    - _Specular: 0.956
     - _TessDistance: 150
     - _TessEdgeFactor: 64
     - _TessInsideFactor: 64
     m_Colors:
-    - _Color: {r: 0, g: 0.3372549, b: 0.43529412, a: 1}
-    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0, g: 0.1935904, b: 0.30588236, a: 1}
+    - _FoamColor: {r: 0.90943396, g: 0.90943396, b: 0.90943396, a: 1}
     - _TessFactor: {r: 64, g: 64, b: 64, a: 64}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

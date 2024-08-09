@@ -150,7 +150,7 @@ Shader "Oceana/OceanUnderwater"
 
                 float2 sampleDir = posProj - camProj;
                 half multMaks = sphereMask * cameraMask * cameraMask * saturate(dot(sampleDir, sampleDir) / (_RaysDistance * _RaysDistance)) * saturate(_MainLightPosition.y);
-                half raysMask = saturate(length(SampleScrollsNormal_WS(camProj + normalize(sampleDir) * _RaysDistance).xz)) * multMaks;
+                half raysMask = saturate(saturate(length(SampleScrollsNormal_WS(camProj + normalize(sampleDir) * _RaysDistance).xz)) * multMaks * 2);
                 half3 fogColor = lerp(_Color.rgb, sqrt(_Color.rgb * _MainLightColor.rgb), sphereMask * cameraMask);
                 fogColor = lerp(fogColor, sqrt(fogColor * _MainLightColor.rgb), raysMask);
 

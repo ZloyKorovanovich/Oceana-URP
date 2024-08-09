@@ -18,20 +18,20 @@ limitations under the License.
 
 StructuredBuffer<float3> Positions;
 
-RWStructuredBuffer<float3> UpTragets;
+RWStructuredBuffer<float3> UpVectors;
 RWStructuredBuffer<float3> Impulses;
 
 Texture2D<half4> Scroll_0;
 Texture2D<half4> Scroll_1;
 Texture2D<half4> Scroll_2;
+Texture2D<half4> Scroll_3;
 
 float4 Scroll_0_ST;
 float4 Scroll_1_ST;
 float4 Scroll_2_ST;
+float4 Scroll_3_ST;
 
-float Height_0;
-float Height_1;
-float Height_2;
+half4 ScrollHeights;
 
 int Side;
 
@@ -56,14 +56,21 @@ void RenderPhysics (uint3 id : SV_DispatchThreadID)
     half4 s_0 = Scroll_0.SampleLevel(linearRepeatSampler, Positions[index].xz * Scroll_0_ST.xy + Scroll_0_ST.zw, 0);
     half4 s_1 = Scroll_1.SampleLevel(linearRepeatSampler, Positions[index].xz * Scroll_1_ST.xy + Scroll_1_ST.zw, 0);
     half4 s_2 = Scroll_2.SampleLevel(linearRepeatSampler, Positions[index].xz * Scroll_2_ST.xy + Scroll_2_ST.zw, 0);
+    half4 s_3 = Scroll_3.SampleLevel(linearRepeatSampler, Positions[index].xz * Scroll_3_ST.xy + Scroll_3_ST.zw, 0);
     
-    half3 n_0 = NormalStrength(ConstructNormal(s_0.rgb), Height_0);
-    half3 n_1 = NormalStrength(ConstructNormal(s_1.rgb), Height_1);
-    half3 n_2 = NormalStrength(ConstructNormal(s_2.rgb), Height_2);
+    half3 n_0 = NormalStrength(ConstructNormal(s_0.rgb), ScrollHeights.x);
+    half3 n_1 = NormalStrength(ConstructNormal(s_1.rgb), ScrollHeights.y);
+    half3 n_2 = NormalStrength(ConstructNormal(s_2.rgb), ScrollHeights.z);
+    half3 n_3 = NormalStrength(ConstructNormal(s_3.rgb), ScrollHeights.w);
 
-    float height = float(s_0.a * Height_0 + s_1.a * Height_1 + s_2.a * Height_2);
-    float3 normal = float3(NormalStrength(normalize(n_0 + n_1 + n_2), 0.3333));
+    half h_0 = s_0.a * ScrollHeights.x;
+    half h_1 = s_1.a * ScrollHeights.y;
+    half h_2 = s_2.a * ScrollHeights.z;
+    half h_3 = s_3.a * ScrollHeights.w;
 
-    Impulses[index] = (height - Positions[index].y) * 29.4; // 9.8 * 3
-    UpTragets[index] = normal;
+    float height = float(h_0 + h_1 + h_2 + h_3) * 0.25;
+    float3 normal = float3(NormalStrength(normalize(n_0 + n_1 + n_2 + n_3), 0.25));
+
+    Impulses[index] = float3(0, 1, 0) * max(saturate(sign(height - Positions[index].y)) * 1.2 * 9.8, 0.0);
+    UpVectors[index] = normal;
 }

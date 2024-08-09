@@ -23,20 +23,18 @@ namespace Oceana
     public class OceanRenderer : MonoBehaviour
     {
         [SerializeField]
-        private OceanSettings m_Settings;
-        [SerializeField]
         private Material m_Material;
         [SerializeField]
         private Material m_FullScreen;
         [SerializeField]
         private OceanMesh m_Mesh = new();
+        [SerializeField]
+        private bool m_IsConstantParametres;
 
         private Ocean m_Ocean;
 
         private MeshFilter m_MeshFilter;
         private MeshRenderer m_MeshRenderer;
-
-        private OceanSettings m_TempSettings;
 
         public Transform Spectator { get; private set; }
 
@@ -57,6 +55,20 @@ namespace Oceana
         {
             if(Spectator == null)
                 Spectator = Camera.main.transform;
+
+            SetScrolls();
+        }
+
+        private void OnEnable()
+        {
+            m_Ocean.OnGneratorChanged += SetScrolls;
+            m_Ocean.OnGneratorChanged += SetParametres;
+        }
+
+        private void OnDisable()
+        {
+            m_Ocean.OnGneratorChanged -= SetScrolls;
+            m_Ocean.OnGneratorChanged += SetParametres;
         }
 
         private void FixedUpdate()
@@ -65,41 +77,30 @@ namespace Oceana
                 return;
 
             transform.position = new Vector3(Spectator.position.x, 0f, Spectator.position.z);
-            SetScrolls(m_Material);
-            SetScrolls(m_FullScreen);
+            if (!m_IsConstantParametres)
+                SetParametres();
         }
 
-        private void OnValidate()
+        private void SetScrolls()
         {
-            if(m_Settings)
+            var generator = m_Ocean.Generator;
+            if (generator)
             {
-                m_Settings.OnChanged += OnSettingsChange;
-                m_TempSettings = m_Settings;
-            }
-            else
-            {
-                if(m_TempSettings)
-                {
-                    m_TempSettings.OnChanged -= OnSettingsChange;
-                    m_TempSettings = null;
-                }
+                generator.SetScrolls(m_Material);
+                generator.SetScrolls(m_FullScreen);
+
+                return;
             }
         }
 
-        private void OnSettingsChange()
+        private void SetParametres()
         {
-            if(m_Settings)
+            var generator = m_Ocean.Generator;
+            if (generator)
             {
-                m_Settings.SetParametres(m_Material);
-                m_Settings.SetParametres(m_FullScreen);
+                generator.SetParametres(m_Material);
+                generator.SetParametres(m_FullScreen);
             }
-        }
-
-        private void SetScrolls(Material material)
-        {
-            material.SetTexture("_Scroll_0", m_Ocean.Scroll_0);
-            material.SetTexture("_Scroll_1", m_Ocean.Scroll_1);
-            material.SetTexture("_Scroll_2", m_Ocean.Scroll_2);
         }
     }
 }

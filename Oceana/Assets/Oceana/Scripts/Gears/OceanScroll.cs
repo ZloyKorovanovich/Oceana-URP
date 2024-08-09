@@ -22,6 +22,10 @@ namespace Oceana
     [Serializable]
     public class OceanScroll
     {
+        [Header("Adjustment")]
+        [SerializeField]
+        private float m_Height;
+
         [Header("Maps")]
 
         [SerializeField]
@@ -41,7 +45,14 @@ namespace Oceana
         [SerializeField]
         private Vector2 m_Speed_1;
 
+        [SerializeField]
+        private Vector2 m_Tiling = new(0.08f, 0.08f);
+        [SerializeField]
+        private Vector2 m_Offset = new(0f, 0f);
+
         public RenderTexture Scroll { get; private set; }
+        public float Height => m_Height;
+        public Vector4 ST => new Vector4(m_Tiling.x, m_Tiling.y, m_Offset.x, m_Offset.y);
 
         public void Init(int resolution)
         {
@@ -63,7 +74,7 @@ namespace Oceana
                 Scroll.Release();
         }
 
-        public void SetTextures(ComputeShader shader, int kernel)
+        public void SetGenerationSource(ComputeShader shader, int kernel)
         {
             shader.SetTexture(kernel, "HeightMap_0", m_Height_0);
             shader.SetTexture(kernel, "HeightMap_1", m_Height_1);
@@ -74,10 +85,10 @@ namespace Oceana
             shader.SetTexture(kernel, "Scroll", Scroll);
         }
 
-        public void SetParametres(ComputeShader shader, float time)
+        public void SetGenerationInput(ComputeShader shader, float time)
         {
-            var packedSpeed = new Vector4(m_Speed_0.x, m_Speed_0.y, m_Speed_1.x, m_Speed_1.y);
-            shader.SetVector("Maps_ST", packedSpeed * time);
+            var speedPack = new Vector4(m_Speed_0.x, m_Speed_0.y, m_Speed_1.x, m_Speed_1.y);
+            shader.SetVector("Maps_ST", speedPack * time);
         }
     }
 }
