@@ -22,11 +22,10 @@ Shader "Oceana/OceanSurface"
         [HideInInspector]_Scroll_0 ("Scroll 0", 2D) = "blue" {}
         [HideInInspector]_Scroll_1 ("Scroll 1", 2D) = "blue" {}
         [HideInInspector]_Scroll_2 ("Scroll 2", 2D) = "blue" {}
+        [HideInInspector]_Scroll_3 ("Scroll 3", 2D) = "blue" {}
 
         [Header(Cascades)]
-        [HideInInspector]_Height_0 ("Height 0", float) = 1
-        [HideInInspector]_Height_1 ("Height 1", float) = 1
-        [HideInInspector]_Height_2 ("Height 2", float) = 1
+        [HideInInspector]_ScrollHeights ("Scroll Heights", vector) = (0.25, 0.25, 0.25, 0.25)
 
         [Header(Color)]
         _Color ("Color", color) = (0.1, 0.4, 0.6)
@@ -45,12 +44,12 @@ Shader "Oceana/OceanSurface"
 
         [Header(Foam)]
         [Toggle] _IsRednerFoam ("Render", float) = 1
-        _FoamMask ("Mask", 2D) = "white" {}
-        _FoamContrast ("Contrast", float) = 1
+        _FoamMask_0 ("Mask_0", 2D) = "black" {}
+        _FoamMask_1 ("Mask_1", 2D) = "black" {}
         _FoamColor ("Color", color) = (0.8, 0.8, 0.8, 1)
         _FoamAmount ("Amount", range(0, 1)) = 0.3
         _FoamCover ("Cover", float) = 0.3
-        _FoamPower ("Power", range(0, 1)) = 1
+        _FoamPower ("Power", range(0.1, 2)) = 1
 
         [Header(Back)]
         _BackContrast ("Contrast", range(0, 1)) = 0.5
@@ -222,10 +221,10 @@ Shader "Oceana/OceanSurface"
             
             half _BackFresnel, _BackContrast;
 
-            sampler2D _FoamMask;
-            float4 _FoamMask_ST;
+            sampler2D _FoamMask_0, _FoamMask_1;
+            float4 _FoamMask_0_ST, _FoamMask_1_ST;
             half4 _FoamColor;
-            half _FoamAmount, _FoamContrast, _FoamCover, _FoamPower;
+            half _FoamAmount, _FoamCover, _FoamPower;
             half _IsRednerFoam;
 
             SamplerState bilinearRepeatSampler;
@@ -246,9 +245,9 @@ Shader "Oceana/OceanSurface"
                 float2 uv_ss = GetSSUV(varyings.position_ss);
 
                 half heightMask = pow(saturate(height_01 * abs(normal_ws.y) * abs(normal_ws.y) - (1 - _FoamAmount)), _FoamPower);
-                half depthMask = 1.0 - saturate(Linear01Depth(SampleSceneDepth(uv_ss), _ZBufferParams) * _ProjectionParams.z - (_FoamCover + varyings.position_ss.w - 1));
-                half foamtex = saturate(tex2D(_FoamMask, varyings.position_ws.xz * _FoamMask_ST.xy + _Time.y * _FoamMask_ST.zw).r + tex2D(_FoamMask, varyings.position_ws.xz * _FoamMask_ST.xy - _Time.y * _FoamMask_ST.zw).r);
-                half foamMask = saturate(_IsRednerFoam) * saturate(Contrast(foamtex, _FoamContrast, 0.4)) * saturate(heightMask + depthMask);
+                half depthMask = pow(1.0 - saturate(Linear01Depth(SampleSceneDepth(uv_ss), _ZBufferParams) * _ProjectionParams.z - (_FoamCover + varyings.position_ss.w - 1)), _FoamPower);
+                half foamtex = saturate(tex2D(_FoamMask_0, varyings.position_ws.xz * _FoamMask_0_ST.xy + _Time.y * _FoamMask_0_ST.zw).r + tex2D(_FoamMask_1, varyings.position_ws.xz * _FoamMask_1_ST.xy + _Time.y * _FoamMask_1_ST.zw).r);
+                half foamMask = saturate(_IsRednerFoam) * foamtex * saturate(heightMask + depthMask);
                 half3 color = _Color.rgb;
 
                 if(isFrontFace)

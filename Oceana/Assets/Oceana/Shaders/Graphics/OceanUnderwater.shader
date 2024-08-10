@@ -22,11 +22,10 @@ Shader "Oceana/OceanUnderwater"
         [HideInInspector]_Scroll_0 ("Scroll 0", 2D) = "blue" {}
         [HideInInspector]_Scroll_1 ("Scroll 1", 2D) = "blue" {}
         [HideInInspector]_Scroll_2 ("Scroll 2", 2D) = "blue" {}
+        [HideInInspector]_Scroll_3 ("Scroll 3", 2D) = "blue" {}
 
         [Header(Cascades)]
-        [HideInInspector]_Height_0 ("Height 0", float) = 1
-        [HideInInspector]_Height_1 ("Height 1", float) = 1
-        [HideInInspector]_Height_2 ("Height 2", float) = 1
+        [HideInInspector]_ScrollHeights ("Scroll Heights", vector) = (0.25, 0.25, 0.25, 0.25)
 
         [Header(Fog)]
         _Color ("Color", color) = (1, 1, 1, 1)

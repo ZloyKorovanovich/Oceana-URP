@@ -25,7 +25,7 @@ MonoBehaviour:
     m_Tiling: {x: 0.1, y: 0.1}
     m_Offset: {x: 0, y: 0}
   m_Scroll_1:
-    m_Height: 3.93
+    m_Height: 3
     m_Height_0: {fileID: 2800000, guid: 8927d000825e90a45a467a43d3749432, type: 3}
     m_Height_1: {fileID: 2800000, guid: 816e6017363777a4aa02bd40f2b48826, type: 3}
     m_Normal_0: {fileID: 2800000, guid: d2dedc83844a6e1429a2f295ae05addb, type: 3}
@@ -35,7 +35,7 @@ MonoBehaviour:
     m_Tiling: {x: 0.06, y: 0.06}
     m_Offset: {x: 0, y: 0}
   m_Scroll_2:
-    m_Height: 3
+    m_Height: 4
     m_Height_0: {fileID: 2800000, guid: 6ff3795179d2e4a448be8649737c6083, type: 3}
     m_Height_1: {fileID: 2800000, guid: 34802b8f086ed1f4ebb9d2dfbeb716e7, type: 3}
     m_Normal_0: {fileID: 2800000, guid: de2b3713676511c4f84fba2c56de171b, type: 3}
@@ -45,7 +45,7 @@ MonoBehaviour:
     m_Tiling: {x: 0.04, y: 0.04}
     m_Offset: {x: 0, y: 0}
   m_Scroll_3:
-    m_Height: 4
+    m_Height: 10
     m_Height_0: {fileID: 2800000, guid: d2411a4376765d54ebf767efacb03c8d, type: 3}
     m_Height_1: {fileID: 2800000, guid: 93dfbd603448a964597c59832d6a9fba, type: 3}
     m_Normal_0: {fileID: 2800000, guid: bb1805de020241d4097678a9adae6e7c, type: 3}

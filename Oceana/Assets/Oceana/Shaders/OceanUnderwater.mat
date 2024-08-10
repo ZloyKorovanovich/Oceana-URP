@@ -96,6 +96,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 0.04, y: 0.04}
         m_Offset: {x: 0, y: 0}
+    - _Scroll_3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 0.01, y: 0.01}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -145,7 +149,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _RaysContrast: 1
-    - _RaysDistance: 10
+    - _RaysDistance: 8
     - _RaysIntensity: 1.49
     - _RaysPower: 1
     - _RaysSamples: 1
@@ -163,6 +167,7 @@ Material:
     - _Color: {r: 0.0039373273, g: 0.1700463, b: 0.2981131, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 0.13253826, g: 0.21096179, b: 0.3207547, a: 1}
+    - _ScrollHeights: {r: 1, g: 3, b: 4, a: 10}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
