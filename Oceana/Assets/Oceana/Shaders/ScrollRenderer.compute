@@ -1,0 +1,36 @@
+#pragma kernel Render
+
+Texture2DArray<float3> _ScrollArray;
+RWTexture2D<float4> _ScrollMap;
+
+cbuffer Properties{
+    uint _ScrollResolution;
+    uint _ScrollCount;
+    uint _MipLevel;
+    float4 _ScrollArray_ST[8];
+
+    SamplerState _bilinearRepeatSampler;
+}
+
+float _Time;
+
+#include "include/MapPacking.hlsl"
+
+[numthreads(32, 32, 1)]
+void Render (uint3 id : SV_DispatchThreadID) {
+    float3 normal = float3(0, 0, 0);
+    float height = 0;
+
+    float2 st = id.xy / (float)_ScrollResolution;
+
+    [unroll(8)]
+    for(uint i = 0 ; i < _ScrollCount; i++) {
+        float3 sample = _ScrollArray.SampleLevel(_bilinearRepeatSampler, float3(st * _ScrollArray_ST[i].xy + _Time * _ScrollArray_ST[i].zw, i), 0);
+        normal += UnpackRGUpNormal(sample.rg);
+        height += sample.b;
+    }
+
+    normal = normalize(normal);
+    height = height / _ScrollCount;
+    _ScrollMap[id.xy] = float4(PackRGBNormal(normal), height);
+}

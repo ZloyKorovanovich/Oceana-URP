@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e762ad00a18af94580fb69226bccda8, type: 3}
+  m_Name: OceanaSettings
+  m_EditorClassIdentifier: 
+  ScrollShader: {fileID: 7200000, guid: 4970667868b5d234c83fbf5d074cb71c, type: 3}
+  ScrollArray: {fileID: 18700000, guid: 84999cb9d087a9a4ab1045193da24b81, type: 2}
+  ScrollArrayST:
+  - {x: 1, y: 1, z: 0.05, w: 0}
+  - {x: 1, y: 1, z: -0.05, w: 0}
+  - {x: 1, y: 1, z: 0, w: 0.05}
+  - {x: 1, y: 1, z: 0, w: -0.05}
+  - {x: 1, y: 1, z: 0.05, w: -0.05}
+  - {x: 2, y: 2, z: -0.05, w: 0.05}
+  - {x: 2, y: 2, z: 0.05, w: 0.05}
+  - {x: 2, y: 2, z: -0.05, w: -0.05}
+  ScrollResolution: 1024
+  ScrollFormat: 48
+  SeaLevel: 0
+  DisplaceHeight: 0.5
+  ScrollST: {x: 0.2, y: 0.2, z: 0, w: 0}
+  SurfaceMaterial: {fileID: 2100000, guid: cd5de16c6dae22e4db0896880b134b0c, type: 2}
+  SurfaceMesh: {fileID: -1077782958523898724, guid: 02f84aa0717537949ba0f6c3b6efe698,
+    type: 3}
+  UnderwaterMaterial: {fileID: 2100000, guid: 855380283b4169e4b9675bf0615ae18d, type: 2}

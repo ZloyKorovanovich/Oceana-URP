@@ -1,0 +1,13 @@
+#pragma kernel Pack
+
+Texture2D<float3> _NormalMap;
+Texture2D<float> _HeightMap;
+
+RWTexture2D<float3> _PackMap;
+
+#include "include/MapPacking.hlsl"
+
+[numthreads(32, 32, 1)]
+void Pack (uint3 id : SV_DispatchThreadID) {
+    _PackMap[id.xy].rgb = float3(PackRGUpNormal(_NormalMap[id.xy]), _HeightMap[id.xy].r);
+}
